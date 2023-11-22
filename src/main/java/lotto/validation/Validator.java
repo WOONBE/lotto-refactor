@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Validator {
 
-
     private static final int MAX_NUMBER_LENGTH = 6;
     private static final int START_NUMBER = 1;
     private static final int END_NUMBER = 45;

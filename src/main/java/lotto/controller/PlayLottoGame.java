@@ -2,6 +2,7 @@ package lotto.controller;
 
 import lotto.domain.Game;
 import lotto.domain.Lotto;
+import lotto.domain.Rank;
 import lotto.domain.User;
 import lotto.service.GameService;
 import lotto.service.LottoService;
@@ -9,6 +10,8 @@ import lotto.utils.Parser;
 import lotto.validation.Validator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class PlayLottoGame {
@@ -19,6 +22,7 @@ public class PlayLottoGame {
     private final Validator validator = new Validator();
     private final OutputView outputView = new OutputView();
     private final Parser parser = new Parser();
+
     private List<Integer> winningNumbers;
     private User user;
     private Game game;
@@ -30,24 +34,24 @@ public class PlayLottoGame {
         createNewGame();
         showGameResult();
     }
-
-
-    private void beforeStartGame(){
+    private void beforeStartGame() {
         user = new User(inputUserAmount());
-        lottoService.buyLottoAtOnce(user);
+        int userAmount = user.getPurchaseAmount();
+        lottoService.buyLottoAtOnce(userAmount);
         showPurchaseResult();
     }
-
-    public void createNewGame(){
+    private Game createNewGame(){
         game = new Game(inputWinningNumbers(), inputBonusNumber());
-
+        return game;
     }
 
-    private void showGameResult(){
-        gameService.checkUserLotteries(user, game);
+    private void showGameResult() {
         outputView.winningStatistics();
-        outputView.showRankResult(user.getLottoResult());
-        outputView.showRateOfReturn(user.getRateOfReturn(user));
+        gameService.initLottoResult();
+        HashMap<Rank, Integer> result = gameService.checkUserLotteries(game,lottoService.getPurchasedLotteries());
+        outputView.showRankResult(result);
+        int userAmount = user.getPurchaseAmount();
+        outputView.showRateOfReturn(gameService.getRateOfReturn(userAmount));
     }
 
 
@@ -65,11 +69,14 @@ public class PlayLottoGame {
 
     private void showPurchaseResult(){
         outputView.purchaseMessage(user.getPurchaseAmount() / LEAST_AMOUNT);
-        for(Lotto lotto : user.getPurchasedLotteries()){
+        for(Lotto lotto : lottoService.getPurchasedLotteries()){
             outputView.lottoNumbers(lotto.getNumbers());
         }
     }
     private List<Integer> inputWinningNumbers(){
+        if(game != null){
+            return game.getWinningNumbers();
+        }
         while (true){
             try {
                 String userInput = inputView.inputWinningNumbers();
@@ -83,6 +90,9 @@ public class PlayLottoGame {
 
     //통과
     private int inputBonusNumber(){
+        if(game != null){
+            return game.getBonusNumber();
+        }
         while (true){
             try {
                 String userInput = inputView.inputBonusNumber();

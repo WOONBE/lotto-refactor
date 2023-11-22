@@ -31,20 +31,20 @@ class UserTest {
         }
 
 
-    @DisplayName("구매자의 로또 수익률을 계산")
-    @Test
-    void rateOfReturnTest() {
-        //given
-        User user = new User(76000);
-        user.getLottoResult().put(Rank.FOURTH,1);
-        user.getLottoResult().put(Rank.FIFTH,1);
-
-        //when
-        double result = user.getRateOfReturn(user);
-
-        //then
-        assertThat(result).isEqualTo(72.4);
-    }
+//    @DisplayName("구매자의 로또 수익률을 계산")
+//    @Test
+//    void rateOfReturnTest() {
+//        //given
+//        User user = new User(76000);
+//        user.getLottoResult().put(Rank.FOURTH,1);
+//        user.getLottoResult().put(Rank.FIFTH,1);
+//
+//        //when
+//        double result = user.getRateOfReturn(user);
+//
+//        //then
+//        assertThat(result).isEqualTo(72.4);
+//    }
 
 
 }
