@@ -96,14 +96,18 @@ public class PlayLottoGame {
         while (true){
             try {
                 String userInput = inputView.inputBonusNumber();
-                validator.isNumberCharInteger(userInput);
-                int bonusNumber = parser.parseInputStringNumber(userInput);
-                validator.isValidBonusNumber(winningNumbers,bonusNumber);
-                return bonusNumber;
+                return validateUserInputBonusNumber(userInput);
             }catch (IllegalArgumentException e){
                 return inputBonusNumber();
             }
         }
+    }
+
+    private int validateUserInputBonusNumber(String userInput) {
+        validator.isNumberCharInteger(userInput);
+        int bonusNumber = parser.parseInputStringNumber(userInput);
+        validator.isValidBonusNumber(winningNumbers,bonusNumber);
+        return bonusNumber;
     }
 
     public int isValidPurchaseAmount(String amount) {

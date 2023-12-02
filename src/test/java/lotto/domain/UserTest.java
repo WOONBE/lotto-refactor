@@ -30,7 +30,7 @@ class UserTest {
             assertThat(result2).isInstanceOf(IllegalArgumentException.class);
         }
 
-
+//
 //    @DisplayName("구매자의 로또 수익률을 계산")
 //    @Test
 //    void rateOfReturnTest() {
